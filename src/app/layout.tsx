@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto_Mono, Bebas_Neue } from "next/font/google";
 import "./globals.css";
+import clsx from "clsx";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto_Mono({ subsets: ["latin"] });
+const bebas = Bebas_Neue({ subsets: ["latin"], weight: "400" , variable: "--font-bebas" });
 
 export const metadata: Metadata = {
   title: "Bordeable - Next",
@@ -15,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="es">
+      <body className={clsx(roboto.className, bebas.variable)}>{children}</body>
     </html>
   );
 }
