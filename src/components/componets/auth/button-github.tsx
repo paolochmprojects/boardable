@@ -14,7 +14,7 @@ const ButtonGithub = () => {
     return (
         <Button
             onClick={handleClick}
-            className="rounded bg-black py-2 px-4 text-sm text-white flex justify-center items-center gap-2">
+            className="btn">
             <FaGithub size={20} /> Inicia con Github
         </Button>
     )
