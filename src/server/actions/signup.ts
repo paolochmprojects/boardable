@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/db"
+import { Provider } from "@prisma/client"
 import { genSalt, hash } from "bcryptjs"
 
 
@@ -33,7 +34,8 @@ export const SignUpCredentials = async (data: UserSignUp) : Promise<SignUpRespon
             data: {
                 name: data.name,
                 email: data.email,
-                password: await hash(data.password, salt)
+                password: await hash(data.password, salt),
+                provider: [Provider.CREDENTIALS]
             }
         })
     } catch (error) {

@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 
+-- CreateEnum
+CREATE TYPE "Provider" AS ENUM ('CREDENTIALS', 'GITHUB');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -8,8 +11,9 @@ CREATE TABLE "User" (
     "role" "Role"[] DEFAULT ARRAY['USER']::"Role"[],
     "email" TEXT NOT NULL,
     "image" TEXT,
-    "password" TEXT NOT NULL,
-    "emailVerified" BOOLEAN NOT NULL,
+    "provider" "Provider"[],
+    "password" TEXT,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

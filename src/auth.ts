@@ -4,6 +4,7 @@ import GitHub from "next-auth/providers/github"
 import prisma from "./lib/db"
 import { z } from "zod"
 import { compare } from "bcryptjs"
+import { Provider, User } from "@prisma/client"
 
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -34,7 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!userInDB) return null
 
-        const isPasswordValid = await compare(password, userInDB.password)
+        const isPasswordValid = await compare(password, userInDB.password as string)
 
         if (!isPasswordValid) return null
 
@@ -52,11 +53,63 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, account }) {
 
       if (account?.provider === "github") {
-        console.log(user)
+        let userExist = await prisma.user.findUnique({
+          where: {
+            email: user.email!
+          }
+        })
+
+        if (!userExist) {
+
+          userExist = await prisma.user.create({
+            data: {
+              email: user.email!,
+              name: user.name!,
+              image: user.image!,
+              provider: [Provider.GITHUB],
+              emailVerified: true
+            }
+          })
+
+        } else {
+
+          if (!userExist.provider.includes(Provider.GITHUB)) {
+            userExist = await prisma.user.update({
+              where: {
+                email: user.email!
+              },
+              data: {
+                provider: {
+                  push: Provider.GITHUB
+                },
+                emailVerified: true
+              }
+            })
+          }
+        }
+        const { password: _, ...data } = userExist
+        token.data = data
+      }
+
+      if (account?.provider === "credentials") {
+        token.data = user
       }
 
       return token
+    },
 
+    async session({ session, token }) {
+
+      const {id, email, name, image, provider, role } = token.data as User
+    
+      session.user.email = email
+      session.user.id = id
+      session.user.name = name
+      session.user.image = image ? image : undefined
+      session.user.provider = provider
+      session.user.role = role
+
+      return session
     }
   }
 })
