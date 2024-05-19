@@ -1,11 +1,9 @@
-import { Button } from "@headlessui/react";
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <main>
-      Bordeable project.
-      <Button className="rounded bg-sky-600 py-2 px-4 text-sm text-white data-[hover]:bg-sky-500 data-[hover]:data-[active]:bg-sky-700">Paolo</Button>
-    </main>
+    <div>
+      <h1 className="text-5xl font-bold font-bebas">Boardeable Project</h1>
+      <p className="text-center">by paolochmprojects</p>
+    </div>
   );
 }

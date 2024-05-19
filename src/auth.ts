@@ -49,21 +49,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 
   callbacks: {
-    async signIn({ account }) {
-    
-      return true
+    async jwt({ token, user, account }) {
+
+      if (account?.provider === "github") {
+        console.log(user)
+      }
+
+      return token
+
     }
-    // async jwt({ token, user }) {
-    //   if (user) {
-    //     token.user = user
-    //   }
-    //   return token
-    // },
-    // async session({ session, token }) {
-    //   if (token.user) {
-    //     session.user = token.user
-    //   }
-    //   return session
-    // }
   }
 })

@@ -1,7 +1,6 @@
 "use client"
 import { signOutAction } from "@/server/actions/signout"
 import { Button } from "@headlessui/react"
-import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 interface NavBarProps {
@@ -16,23 +15,30 @@ const NavBar = ({ authenticated }: NavBarProps) => {
 
     return (
         <header>
-            <nav className="flex max-w-screen-xl mx-auto p-6 justify-between">
+            <nav className="flex max-w-screen-xl mx-auto p-6 justify-between items-center">
                 <Link href="/" className="text-4xl font-bebas">
                     Boardeable
                 </Link>
-                <ul>
+                <ul className="flex gap-4 items-center">
                     {authenticated ? (
                         <li>
-                            <Button onClick={signOut} className="btn btn-sm btn-primary">
+                            <Button onClick={signOut} className="btn btn-xs btn-ghost">
                                 Cerrar Sesion
                             </Button>
                         </li>
                     ) : (
-                        <li>
-                            <Link href="/signin" className="btn btn-sm btn-primary">
-                                Iniciar Sesion
-                            </Link>
-                        </li>
+                        <>
+                            <li>
+                                <Link href="/signin" className="btn btn-xs btn-ghost">
+                                    Iniciar Sesion
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/signup" className="btn btn-xs btn-ghost">
+                                    Registrate
+                                </Link>
+                            </li>
+                        </>
                     )}
                 </ul>
             </nav>

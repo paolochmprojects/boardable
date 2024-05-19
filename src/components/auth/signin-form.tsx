@@ -8,8 +8,9 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { SignInFormSchema, UserSignIn } from "@/schemas/signin.schema"
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
-import { SignInCredentials } from '@/server/actions/signin'
+import { signInCredentials, signInWithGithub } from '@/server/actions/signin'
 import { useRouter } from 'next/navigation'
+import { FaGithub } from "react-icons/fa";
 
 
 
@@ -26,7 +27,7 @@ const SignInForm = () => {
 
     const onSubmit: SubmitHandler<UserSignIn> = async (data) => {
         setLoading(true)
-        const {success, message} = await SignInCredentials(data)
+        const { success, message } = await signInCredentials(data)
         if (!success) {
             addAlert({ type: "error", message })
         } else {
@@ -35,6 +36,12 @@ const SignInForm = () => {
         }
         setLoading(false)
     };
+
+    const handleSignInWithGithub = async () => {
+        setLoading(true)
+        await signInWithGithub()
+        setLoading(false)
+    }
 
     return (
         <Fieldset className="flex flex-col gap-4 p-10 min-w-[400px] bg-neutral-200/30 rounded-2xl"
@@ -66,8 +73,8 @@ const SignInForm = () => {
                 </div>
                 {errors.password && <p className="text-red-500 text-xs mt-2">{errors.password.message}</p>}
             </Field>
-            <div>
-            <Button className={clsx(
+            <div className="flex flex-col gap-2">
+                <Button className={clsx(
                     "btn btn-sm btn-primary w-full",
                 )}
                     disabled={loading}
@@ -77,6 +84,13 @@ const SignInForm = () => {
                 </Button>
                 <div className="divider">O</div>
                 <Link className="btn btn-sm w-full" href="/signup">Registrate</Link>
+                <Button
+                    disabled={loading}
+                    type="button"
+                    className="btn btn-sm btn-neutral w-full" onClick={handleSignInWithGithub}>
+                    <FaGithub />
+                    {loading ? <><span className="loading loading-spinner" /> Cargando...</> : "Iniciar Sesion con Github"}
+                </Button>
             </div>
         </Fieldset>
     )

@@ -37,7 +37,6 @@ export const SignUpCredentials = async (data: UserSignUp) : Promise<SignUpRespon
             }
         })
     } catch (error) {
-        console.log(error)
         return { success: false, message: "Error al registrar el usuario." }
     }
 
