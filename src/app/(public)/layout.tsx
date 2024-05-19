@@ -1,18 +1,15 @@
-import { auth } from '@/auth'
-import { redirect } from 'next/navigation'
-import Footer from '@/components/footer'
-import React from 'react'
-import NavBar from '@/components/ui/navbar'
+import { auth } from "@/auth"
+import Footer from "@/components/footer"
+import NavBar from "@/components/ui/navbar"
+import { redirect } from "next/dist/server/api-utils"
 
-interface AuthLayoutProps {
+export const revalidate = 0
+interface PublicLayoutProps {
     children: React.ReactNode
 }
-
-const AuthLayout = async ({ children }: AuthLayoutProps) => {
+const PublicLayout = async ({ children }: PublicLayoutProps) => {
 
     const session = await auth()
-
-    if (session) return redirect("/")
 
     const authenticated = !!session
 
@@ -27,4 +24,4 @@ const AuthLayout = async ({ children }: AuthLayoutProps) => {
     )
 }
 
-export default AuthLayout
+export default PublicLayout

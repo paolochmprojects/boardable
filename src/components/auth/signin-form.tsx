@@ -9,6 +9,7 @@ import { SignInFormSchema, UserSignIn } from "@/schemas/signin.schema"
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
 import { SignInCredentials } from '@/server/actions/signin'
+import { useRouter } from 'next/navigation'
 
 
 
@@ -16,17 +17,27 @@ const SignInForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<UserSignIn>({
         resolver: zodResolver(SignInFormSchema),
     })
-    const [showPassword, setShowPassword] = useState<boolean>(false)
-    const { alerts, addAlert } = useAlerts()
-    const onSubmit: SubmitHandler<UserSignIn> = async (data) => {
 
-        const { email, password } = data
-        const result = await SignInCredentials({ email, password })
-        console.log(result)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const { addAlert } = useAlerts()
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const router = useRouter()
+
+    const onSubmit: SubmitHandler<UserSignIn> = async (data) => {
+        setLoading(true)
+        const {success, message} = await SignInCredentials(data)
+        if (!success) {
+            addAlert({ type: "error", message })
+        } else {
+            addAlert({ type: "success", message })
+            router.push("/")
+        }
+        setLoading(false)
     };
 
     return (
-        <Fieldset className="flex flex-col gap-4 p-10 min-w-[400px] bg-neutral-600/10 rounded-2xl"
+        <Fieldset className="flex flex-col gap-4 p-10 min-w-[400px] bg-neutral-200/30 rounded-2xl"
             as="form"
             onSubmit={handleSubmit(onSubmit)}>
             <h1 className="text-4xl font-bebas font-bold text-center">Boardeable</h1>
@@ -56,7 +67,14 @@ const SignInForm = () => {
                 {errors.password && <p className="text-red-500 text-xs mt-2">{errors.password.message}</p>}
             </Field>
             <div>
-                <Button className="btn btn-sm btn-primary w-full" type="submit">Inicia sesion</Button>
+            <Button className={clsx(
+                    "btn btn-sm btn-primary w-full",
+                )}
+                    disabled={loading}
+                    type="submit">
+                    {loading ? <><span className="loading loading-spinner" /> Cargando...</> : "Iniciar Sesion"}
+
+                </Button>
                 <div className="divider">O</div>
                 <Link className="btn btn-sm w-full" href="/signup">Registrate</Link>
             </div>

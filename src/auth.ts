@@ -1,48 +1,69 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import GitHub from "next-auth/providers/github"
 import prisma from "./lib/db"
 import { z } from "zod"
-import {compare} from "bcryptjs"
+import { compare } from "bcryptjs"
 
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Credentials({
-    credentials: {
-      email: { label: "Email", type: "email", required: true },
-      password: { label: "Password", type: "password", required: true },
-    },
-    authorize: async (credentials) => {
+  providers: [
+    GitHub,
+    Credentials({
+      credentials: {
+        email: { label: "Email", type: "email", required: true },
+        password: { label: "Password", type: "password", required: true },
+      },
+      authorize: async (credentials) => {
 
-      
-      const { success, data } = z.object({
-        email: z.string().email(),
-        password: z.string().min(8),
-      }).safeParse(credentials)
 
-      if (!success) return null
+        const { success, data } = z.object({
+          email: z.string().email(),
+          password: z.string().min(8),
+        }).safeParse(credentials)
 
-      const { email, password } = data
+        if (!success) return null
 
-      const userInDB = await prisma.user.findUnique({
-        where: {
-          email: email.toLocaleLowerCase().trim()
-        }
-      })
+        const { email, password } = data
 
-      if (!userInDB) return null
+        const userInDB = await prisma.user.findUnique({
+          where: {
+            email: email.toLocaleLowerCase().trim()
+          }
+        })
 
-      const isPasswordValid = await compare(password, userInDB.password)     
+        if (!userInDB) return null
 
-      if (!isPasswordValid) return null
+        const isPasswordValid = await compare(password, userInDB.password)
 
-      const { password:_, ...user } = userInDB
+        if (!isPasswordValid) return null
 
-      return user
-    }
-  })],
+        const { password: _, ...user } = userInDB
+
+        return user
+      }
+    })],
   pages: {
-    // signIn: "/login",
+    signIn: "/signin",
+    newUser: "/signup",
   },
+
   callbacks: {
+    async signIn({ account }) {
+    
+      return true
+    }
+    // async jwt({ token, user }) {
+    //   if (user) {
+    //     token.user = user
+    //   }
+    //   return token
+    // },
+    // async session({ session, token }) {
+    //   if (token.user) {
+    //     session.user = token.user
+    //   }
+    //   return session
+    // }
   }
 })
