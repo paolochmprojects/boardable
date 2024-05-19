@@ -18,18 +18,14 @@ enum Role {
   USER
 }
 
-enum Providers {
-  GITHUB
-  GOOGLE
-}
-
 model User {
   id   String @id() @default(uuid())
   name String
-  role Role
-  email String
-  image String
-  provider Providers
+  role Role[] @default([USER])
+  email String @unique
+  image String?
+  password String
+  emailVerified Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 }

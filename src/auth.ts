@@ -1,15 +1,48 @@
 import NextAuth from "next-auth"
-import GitHub from "next-auth/providers/github"
- 
+import Credentials from "next-auth/providers/credentials"
+import prisma from "./lib/db"
+import { z } from "zod"
+import {compare} from "bcryptjs"
+
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [GitHub({})],
-  pages:{
-    signIn: "/login",
+  providers: [Credentials({
+    credentials: {
+      email: { label: "Email", type: "email", required: true },
+      password: { label: "Password", type: "password", required: true },
+    },
+    authorize: async (credentials) => {
+
+      
+      const { success, data } = z.object({
+        email: z.string().email(),
+        password: z.string().min(8),
+      }).safeParse(credentials)
+
+      if (!success) return null
+
+      const { email, password } = data
+
+      const userInDB = await prisma.user.findUnique({
+        where: {
+          email: email.toLocaleLowerCase().trim()
+        }
+      })
+
+      if (!userInDB) return null
+
+      const isPasswordValid = await compare(password, userInDB.password)     
+
+      if (!isPasswordValid) return null
+
+      const { password:_, ...user } = userInDB
+
+      return user
+    }
+  })],
+  pages: {
+    // signIn: "/login",
   },
   callbacks: {
-    signIn: async ({ user, account, profile, email, credentials }) => {
-      console.log({ user, account, profile, email, credentials })
-      return true
-    }
   }
 })

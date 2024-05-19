@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Roboto_Mono, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
+import Alerts from "@/components/ui/alerts";
 
 const roboto = Roboto_Mono({ subsets: ["latin"] });
-const bebas = Bebas_Neue({ subsets: ["latin"], weight: "400" , variable: "--font-bebas" });
+const bebas = Bebas_Neue({ subsets: ["latin"], weight: "400", variable: "--font-bebas" });
 
 export const metadata: Metadata = {
   title: "Bordeable - Next",
@@ -18,7 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={clsx(roboto.className, bebas.variable)}>{children}</body>
+      <body className={clsx(roboto.className, bebas.variable)}>
+        {children}
+        <Alerts />
+      </body>
     </html>
   );
 }

@@ -3,6 +3,6 @@
 import { signIn } from "@/auth"
 
 
-export const SignInWithGithub = async () => {
-    await signIn('github')
+export const SignInCredentials = async () => {
+    signIn("credentials")
 }
