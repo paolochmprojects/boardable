@@ -32,11 +32,11 @@ const Alerts = () => {
                         alert.type === "warning" && "alert-warning",
                         alert.type === "error" && "alert-error")}
                 >
-                    {alert.type === "success" && <FaRegCircleCheck />}
-                    {alert.type === "warning" && <IoWarningOutline />}
-                    {alert.type === "error" && <CgDanger />}
+                    {alert.type === "success" && <FaRegCircleCheck size={20} />}
+                    {alert.type === "warning" && <IoWarningOutline size={20} />}
+                    {alert.type === "error" && <CgDanger size={20} />}
                     <span className="flex-grow text-sm">{alert.message}</span>
-                    <IoCloseCircleOutline onClick={() => removeAlert(index)} />
+                    <IoCloseCircleOutline size={20} onClick={() => removeAlert(index)} />
                 </div>
             ))}
         </div>

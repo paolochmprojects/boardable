@@ -13,9 +13,11 @@ const PublicLayout = async ({ children }: PublicLayoutProps) => {
 
     const authenticated = !!session
 
+    let userImage = session?.user.image 
+
     return (
         <div className="flex flex-col min-h-screen">
-            <NavBar authenticated={authenticated}/>
+            <NavBar authenticated={authenticated} userImage={userImage}/>
             <main className="flex items-center justify-center flex-grow">
                 {children}
             </main>

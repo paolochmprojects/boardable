@@ -9,6 +9,7 @@ import { SignUpCredentials } from '@/server/actions/signup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SignUpFormSchema, UserSignUp } from '@/schemas/signup.schema';
 import { useAlerts } from '@/store/alerts';
+import BtnGitgub from './button-github';
 
 
 const SignUpForm = () => {
@@ -38,7 +39,7 @@ const SignUpForm = () => {
         <Fieldset className="flex flex-col gap-4 p-10 min-w-[400px] bg-neutral-200/30 rounded-2xl" as="form" onSubmit={handleSubmit(onSubmit)}>
             <h1 className="text-4xl font-bebas font-bold text-center">Boardeable</h1>
             <Legend className="text-2xl font-bold text-center">Registrate</Legend>
-            <Field className="flex flex-col gap-2">
+            <Field className="flex flex-col gap-1">
                 <Label className={clsx("label-text", errors.name && "text-red-500")}>Nombre</Label>
                 <Input
                     className={clsx("input input-sm input-bordered", errors.name && "input-error")}
@@ -47,7 +48,7 @@ const SignUpForm = () => {
                 />
                 {errors.name && <p className="text-red-500 text-xs mt-2">{errors.name.message}</p>}
             </Field>
-            <Field className="flex flex-col gap-2">
+            <Field className="flex flex-col gap-1">
                 <Label className={clsx("label-text", errors.email && "text-red-500")}>Email</Label>
                 <Input
                     className={clsx("input input-sm input-bordered", errors.email && "input-error")}
@@ -57,7 +58,7 @@ const SignUpForm = () => {
                 {errors.email && <p className="text-red-500 text-xs mt-2">{errors.email.message}</p>}
             </Field>
             <Field>
-                <div className="flex flex-col gap-2 relative">
+                <div className="flex flex-col gap-1 relative">
                     <Label className={clsx("label-text", errors.password && "text-red-500")}>Password</Label>
                     <Input
                         className={clsx("input input-sm input-bordered", errors.password && "input-error")}
@@ -75,7 +76,7 @@ const SignUpForm = () => {
 
             </Field>
             <Field as="label" htmlFor="terms" >
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                     <Input id="terms" type="checkbox"
                         className={clsx("checkbox checkbox-sm", errors.terms ? "checkbox-error" : "checkbox-primary")} 
                         {...register('terms')}
@@ -85,9 +86,9 @@ const SignUpForm = () => {
                 </div>
                 {errors.terms && <p className="text-red-500 text-xs mt-2">Debes aceptar los terminos y condiciones</p>}
             </Field>
-            <div>
+            <div  className="flex flex-col gap-1">
                 <Button className={clsx(
-                    "btn btn-sm btn-primary w-full",
+                    "btn btn-sm btn-primary btn-block",
                 )}
                     disabled={loading}
                     type="submit">
@@ -95,7 +96,8 @@ const SignUpForm = () => {
 
                 </Button>
                 <div className="divider">O</div>
-                <Link className="btn btn-sm w-full" href="/signin">Inicia Sesión</Link>
+                <Link className="btn btn-sm btn-block btn-outline" href="/signin">Inicia Sesión</Link>
+                <BtnGitgub />
             </div>
         </Fieldset>
     )
