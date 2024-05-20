@@ -4,7 +4,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { Button } from "@headlessui/react"
 import Link from "next/link"
 import clsx from "clsx"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import Image from "next/image";
 
 interface NavBarProps {
@@ -16,8 +16,11 @@ const NavBar = ({ authenticated, userImage }: NavBarProps) => {
 
     const pathname = usePathname()
 
+    const router = useRouter()
+
     const signOut = async () => {
         await signOutAction()
+        return router.refresh()
     }
 
     return (
