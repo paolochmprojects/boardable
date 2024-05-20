@@ -54,22 +54,6 @@ const NavBar = ({ authenticated, userImage }: NavBarProps) => {
                             </li>
                         </ul>
                     </div>
-                        /*   <>
-                           <li>
-                               <Link href="/account" className={clsx("btn btn-xs", pathname === "/account" ? "btn-link" : "btn-ghost")}>
-                                   
-                                   Mi Cuenta
-                               </Link>
-                           </li>
-                           <li>
-                               <Link href="/boards" className={clsx("btn btn-xs", pathname === "/boards" ? "btn-link" : "btn-ghost")}>
-                                   Tableros
-                               </Link>
-                           </li>
-                           <li>
-                               
-                           </li>
-                       </> */
                     ) : (
                         <>
                             <li>

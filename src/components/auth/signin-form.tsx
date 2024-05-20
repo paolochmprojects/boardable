@@ -33,7 +33,7 @@ const SignInForm = () => {
             addAlert({ type: "error", message })
         } else {
             addAlert({ type: "success", message })
-            router.push("/")
+            router.push("/boards")
         }
         setLoading(false)
     };
