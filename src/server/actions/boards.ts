@@ -58,6 +58,33 @@ export const createBoard = async ({ color, title }: BoardFormData) => {
 
 }
 
+
+export const updateBoard = async (boardId: string, data: BoardFormData) => {
+    const session = await auth()
+    if (!session) return { success: false, message: 'You must be logged in' }
+    const { id } = session.user
+
+    const board = await prisma.board.findUnique({
+        where: {
+            userId: id,
+            id: boardId
+        }
+    })
+    if (!board) return { success: false, message: 'Board not found' }
+
+    try {
+        await prisma.board.update({
+            where: {
+                id: boardId
+            },
+            data
+        })
+        return { success: true, message: 'Board updated successfully' }
+    } catch (error) {
+        return { success: false, message: 'Failed to update board' }
+    }
+}
+
 export const getBoardByIdAndUserId = async (boardId: string) => {
     const session = await auth()
     if (!session) return { success: false, message: 'You must be logged in', data: null }

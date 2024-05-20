@@ -1,7 +1,7 @@
 import { getBoardByIdAndUserId } from "@/server/actions/boards"
 import { redirect } from "next/navigation"
 import clsx from "clsx"
-import BoardForm from "./ui/board-form"
+import BoardForm from "../ui/board-form"
 import { colors, HexColor } from "@/schemas/board.schema"
 import Board from "./ui/board"
 import { getLists } from "@/server/actions/lists"
@@ -22,9 +22,7 @@ const BoardPage = async ({ params }: { params: { id: string } }) => {
 
     return (
         <div className={clsx("p-6", colors[board.color as HexColor])}>
-            
-                <BoardForm board={board} mode="view" />
-            
+            <BoardForm board={board} mode="view" />
             <div className="flex">
                 <Board boardId={board.id} lists={lists} />
             </div>

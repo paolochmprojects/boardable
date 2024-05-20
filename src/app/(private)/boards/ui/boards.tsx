@@ -15,7 +15,7 @@ const Boards = ({ boards }: BoarsProps) => {
             <BoardSort />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 px-2" >
                 <BoardWrapper>
-                    <BoardForm />
+                    <BoardForm  mode='create'/>
                 </BoardWrapper>
                 {boards.map(board => (
                     <BoardWrapper key={board.id} color={board.color as HexColor} boardId={board.id}>

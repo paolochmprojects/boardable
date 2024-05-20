@@ -18,7 +18,7 @@ const BoardSort = () => {
     return (
         <Select
             onChange={(e) => setSortOrder(e.target.value)}
-            className="select select-bordered select-sm w-full max-w-xs"
+            className="select select-bordered select-sm w-full max-w-xs mx-4"
             aria-label="Ordenar por">
             <option value="az">A-Z</option>
             <option value="za">Z-A</option>

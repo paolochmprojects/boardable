@@ -8,13 +8,14 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { useAlerts } from "@/store/alerts"
 import { useRouter } from 'next/navigation'
 import { Card, List } from '@prisma/client'
+import clsx from 'clsx'
 
 type ModeForm = "create" | "edit" | "view"
 
 interface ListFormProps {
     boardId: string
     mode: ModeForm,
-    list?: List & {cards : Card[]}
+    list?: List & { cards: Card[] }
 }
 
 const ListForm = ({ boardId, mode, list }: ListFormProps) => {
@@ -76,6 +77,7 @@ const ListForm = ({ boardId, mode, list }: ListFormProps) => {
         <Fieldset as="form"
             className="py-2"
             onSubmit={handleSubmit(onSubmitCreate)}
+            disabled={loading}
         >
             <Field className="flex flex-col gap-2">
                 <Label>Nombre de lista</Label>
@@ -83,7 +85,9 @@ const ListForm = ({ boardId, mode, list }: ListFormProps) => {
                 {errors.title && <p className="text-red-500 text-xs mt-2">{errors.title.message}</p>}
             </Field>
             <div className="pt-4">
-                <Button type="submit" className="btn btn-xs btn-primary">Crear lista</Button>
+                <Button type="submit" className={clsx("btn btn-sm", loading ? "btn-disabled": "btn-primary")}>
+                    {loading ? "Guardando..." : "Crear lista"}
+                </Button>
             </div>
         </Fieldset>
     )
