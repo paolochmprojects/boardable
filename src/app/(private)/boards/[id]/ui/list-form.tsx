@@ -7,14 +7,14 @@ import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useAlerts } from "@/store/alerts"
 import { useRouter } from 'next/navigation'
-import { List } from '@prisma/client'
+import { Card, List } from '@prisma/client'
 
 type ModeForm = "create" | "edit" | "view"
 
 interface ListFormProps {
     boardId: string
     mode: ModeForm,
-    list?: List
+    list?: List & {cards : Card[]}
 }
 
 const ListForm = ({ boardId, mode, list }: ListFormProps) => {

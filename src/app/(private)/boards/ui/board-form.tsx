@@ -8,10 +8,10 @@ import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import ColorPicker from './colorpicker'
 
 
 const BoardForm = () => {
-    const [visible, setVisible] = useState<boolean>(false)
     const [color, setColor] = useState<HexColor>(HexColor.color1)
     const [loading, setLoading] = useState<boolean>(false)
     const { addAlert } = useAlerts()
@@ -23,10 +23,8 @@ const BoardForm = () => {
 
     const setColorAction = (color: HexColor) => {
         setColor(color)
-        setVisible(!visible)
         setValue('color', color)
     }
-
     const onSubmit: SubmitHandler<BoardFormType> = async (data) => {
 
         setLoading(true)
@@ -62,21 +60,7 @@ const BoardForm = () => {
                     {...register('color', { value: color })}
                 />
                 {errors.color && <p className="text-red-500 text-xs mt-2">{errors.color.message}</p>}
-                <div className="relative w-8 h-8">
-                    <div
-                        onClick={() => setVisible(!visible)}
-                        className={clsx("w-8 h-8 rounded-full border border-black", colors[color])} />
-                    {visible && <div className="absolute w-40 bg-base-100 rounded-lg top-10 left-1/2 -translate-x-1/2 grid grid-cols-4 gap-2 p-3 shadow-lg">
-                        <div className="w-8 h-8 rounded-full border border-black bg-color1" onClick={() => setColorAction(HexColor.color1)} ></div>
-                        <div className="w-8 h-8 rounded-full border border-black bg-color2" onClick={() => setColorAction(HexColor.color2)} ></div>
-                        <div className="w-8 h-8 rounded-full border border-black bg-color3" onClick={() => setColorAction(HexColor.color3)} ></div>
-                        <div className="w-8 h-8 rounded-full border border-black bg-color4" onClick={() => setColorAction(HexColor.color4)} ></div>
-                        <div className="w-8 h-8 rounded-full border border-black bg-color5" onClick={() => setColorAction(HexColor.color5)} ></div>
-                        <div className="w-8 h-8 rounded-full border border-black bg-color6" onClick={() => setColorAction(HexColor.color6)} ></div>
-                        <div className="w-8 h-8 rounded-full border border-black bg-color7" onClick={() => setColorAction(HexColor.color7)} ></div>
-                        <div className="w-8 h-8 rounded-full border border-black bg-color8" onClick={() => setColorAction(HexColor.color8)} ></div>
-                    </div>}
-                </div>
+                <ColorPicker setColor={setColorAction} color={color} />
             </Field>
             <Button
                 type="button"

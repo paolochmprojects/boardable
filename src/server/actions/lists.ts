@@ -12,6 +12,13 @@ export const getLists = async (boardId: string) => {
         where: {
             boardId
         },
+        include: {
+            cards: {
+                orderBy: {
+                    createdAt: 'asc'
+                }
+            }
+        },
         orderBy: {
             createdAt: 'asc'
         }
