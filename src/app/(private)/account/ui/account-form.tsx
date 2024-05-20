@@ -11,6 +11,7 @@ import { MdDeleteOutline, MdOutlineSave } from "react-icons/md";
 import { updateAccount } from '@/server/actions/account-update'
 import { signOutAction } from '@/server/actions/signout'
 import { deleteAccount } from '@/server/actions/acount-delete'
+import { useRouter } from 'next/navigation'
 
 
 interface AccountFormProps {
@@ -23,6 +24,7 @@ const AccountForm = ({ userData }: AccountFormProps) => {
         resolver: zodResolver(AccountFormSchema)
     })
 
+    const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const { addAlert } = useAlerts()
     const [loading, setLoading] = useState<boolean>(false)
@@ -45,8 +47,11 @@ const AccountForm = ({ userData }: AccountFormProps) => {
 
             setTimeout(async () => {
                 await signOutAction()
+                setLoading(false)
                 setCompleted(true)
+                router.refresh()
             }, 3000)
+
         }
     }
 
@@ -68,6 +73,8 @@ const AccountForm = ({ userData }: AccountFormProps) => {
             setTimeout(async () => {
                 await signOutAction()
                 setCompleted(true)
+                setLoading(false)
+                router.refresh()
             }, 3000)
         }
     }
