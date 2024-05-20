@@ -52,8 +52,46 @@ export const createBoard = async ({ color, title }: BoardFormData) => {
         return { success: true, message: 'Board created successfully' }
 
     } catch (error) {
-        
+
         return { success: false, message: 'Failed to create board' }
     }
 
+}
+
+export const getBoardByIdAndUserId = async (boardId: string) => {
+    const session = await auth()
+    if (!session) return { success: false, message: 'You must be logged in', data: null }
+    const { id } = session.user
+
+    const board = await prisma.board.findUnique({
+        where: {
+            userId: id,
+            id: boardId
+        }
+    })
+    if (!board) return { success: false, message: 'Board not found', data: null }
+    return { success: true, message: 'Board found', data: board }
+}
+
+export const deleteBoardbyId = async (boardId: string) => {
+
+    const session = await auth()
+    if (!session) return { success: false, message: 'You must be logged in' }
+    const { id } = session.user
+
+    const boardExist = await prisma.board.findUnique({
+        where: {
+            userId: id,
+            id: boardId
+        }
+    })
+    if (!boardExist) return { success: false, message: 'Board not found' }
+
+    await prisma.board.deleteMany({
+        where: {
+            userId: id,
+            id: boardId
+        }
+    })
+    return { success: true, message: 'Board deleted' }
 }

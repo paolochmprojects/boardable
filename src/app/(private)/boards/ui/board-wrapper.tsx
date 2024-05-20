@@ -1,15 +1,23 @@
 import { colors, HexColor } from '@/schemas/board.schema'
 import cslx from 'clsx'
+import Link from 'next/link'
 
 interface BoardWrapperProps {
     children: React.ReactNode,
-    color?: HexColor
+    color?: HexColor,
+    boardId?: string
 }
-const BoardWrapper = ({ children, color=HexColor.color1 }: BoardWrapperProps) => {
+const BoardWrapper = ({ children, color = HexColor.color1, boardId }: BoardWrapperProps) => {
+
     return (
-        <div className={cslx("h-52 bg-color1 rounded-3xl flex items-center justify-center", colors[color] )} >
+        <Link
+            href={boardId ? `/boards/${boardId}` : "/boards"}
+            className={cslx(
+                "h-52 bg-color1 rounded-3xl flex items-center justify-center",
+                colors[color]
+            )} >
             {children}
-        </div>
+        </Link>
     )
 }
 

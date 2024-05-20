@@ -18,7 +18,7 @@ const Boards = ({ boards }: BoarsProps) => {
                     <BoardForm />
                 </BoardWrapper>
                 {boards.map(board => (
-                    <BoardWrapper key={board.id} color={board.color as HexColor}>
+                    <BoardWrapper key={board.id} color={board.color as HexColor} boardId={board.id}>
                         <h4 className="font-bold">{board.title}</h4>
                     </BoardWrapper>
                 ))}

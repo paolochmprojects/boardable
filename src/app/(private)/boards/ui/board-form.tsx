@@ -1,13 +1,13 @@
 "use client"
-import { colors, HexColor, BoardFormType, BoardFormSchema } from '@/schemas/board.schema'
+import { BoardFormSchema, BoardFormType, colors, HexColor } from '@/schemas/board.schema'
 import { createBoard } from '@/server/actions/boards'
+import { useAlerts } from '@/store/alerts'
 import { Button, Field, Fieldset, Input, Label } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useAlerts } from '@/store/alerts'
 
 
 const BoardForm = () => {
@@ -27,20 +27,21 @@ const BoardForm = () => {
     }
 
     const onSubmit: SubmitHandler<BoardFormType> = async (data) => {
-
         const { success, message } = await createBoard(data)
-        if(!success) return addAlert({ type: "error", message })
+        if (!success) return addAlert({ type: "error", message })
 
         addAlert({ type: "success", message })
         setValue('title', '')
-        router.refresh()
+
+        return router.refresh()
     }
 
     return (
         <Fieldset
-            onSubmit={handleSubmit(onSubmit)}
             className="h-full w-full p-6 flex flex-col justify-around relative"
-            as="form" >
+            as="form"
+            onSubmit={handleSubmit(onSubmit)}
+            >
             <Field className="flex flex-col gap-1">
                 <Label className="label-text">Titulo de tablero</Label>
                 <Input
@@ -57,6 +58,7 @@ const BoardForm = () => {
                     className="hidden"
                     {...register('color', { value: color })}
                 />
+                {errors.color && <p className="text-red-500 text-xs mt-2">{errors.color.message}</p>}
                 <div className="relative w-8 h-8">
                     <div
                         onClick={() => setVisible(!visible)}
@@ -74,7 +76,8 @@ const BoardForm = () => {
                 </div>
             </Field>
             <Button
-                type="submit"
+                type="button"
+                onClick={handleSubmit(onSubmit)}
                 className="btn btn-sm btn-primary w-20 absolute bottom-10 right-10">
                 Crear
             </Button>
