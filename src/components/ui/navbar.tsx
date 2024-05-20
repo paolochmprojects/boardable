@@ -1,6 +1,6 @@
 "use client"
 import { signOutAction } from "@/server/actions/signout"
-import { FaRegUser } from "react-icons/fa6";
+import { FaRegUserCircle } from "react-icons/fa";
 import { Button } from "@headlessui/react"
 import Link from "next/link"
 import clsx from "clsx"
@@ -33,7 +33,7 @@ const NavBar = ({ authenticated, userImage }: NavBarProps) => {
                                 {userImage ?
                                     <Image src={userImage} alt="user image" width={32} height={32} priority={false} loading="lazy" />
                                     :
-                                    <FaRegUser />}
+                                    <FaRegUserCircle className="w-10 h-10"/>}
                             </div>
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">

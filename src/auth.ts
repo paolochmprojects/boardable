@@ -50,9 +50,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger }) {
 
-      if (account?.provider === "github") {
+      if (account?.provider === "github", trigger === "signIn") {
         let userExist = await prisma.user.findUnique({
           where: {
             email: user.email!
@@ -74,6 +74,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         } else {
 
           if (!userExist.provider.includes(Provider.GITHUB)) {
+
+
             userExist = await prisma.user.update({
               where: {
                 email: user.email!
@@ -86,6 +88,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               }
             })
           }
+
+          if (user.image) {
+            userExist = await prisma.user.update({
+              where: {
+                email: user.email!
+              },
+              data: {
+                image: user.image
+              }
+            })
+          }
+
         }
         const { password: _, ...data } = userExist
         token.data = data
@@ -100,8 +114,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     async session({ session, token }) {
 
-      const {id, email, name, image, provider, role } = token.data as User
-    
+      const { id, email, name, image, provider, role } = token.data as User
+
       session.user.email = email
       session.user.id = id
       session.user.name = name
