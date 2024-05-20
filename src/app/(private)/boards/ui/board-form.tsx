@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 const BoardForm = () => {
     const [visible, setVisible] = useState<boolean>(false)
     const [color, setColor] = useState<HexColor>(HexColor.color1)
+    const [loading, setLoading] = useState<boolean>(false)
     const { addAlert } = useAlerts()
     const router = useRouter()
 
@@ -27,12 +28,14 @@ const BoardForm = () => {
     }
 
     const onSubmit: SubmitHandler<BoardFormType> = async (data) => {
+
+        setLoading(true)
         const { success, message } = await createBoard(data)
         if (!success) return addAlert({ type: "error", message })
 
         addAlert({ type: "success", message })
         setValue('title', '')
-
+        setLoading(false)
         return router.refresh()
     }
 
@@ -77,9 +80,10 @@ const BoardForm = () => {
             </Field>
             <Button
                 type="button"
+                disabled={loading}
                 onClick={handleSubmit(onSubmit)}
-                className="btn btn-sm btn-primary w-20 absolute bottom-10 right-10">
-                Crear
+                className={clsx("btn btn-sm btn-primary w-20 absolute bottom-10 right-10", loading && "btn-disabled")}>
+                {loading ? <><span className="loading loading-spinner"></span>Cargando...</> : "Crear"}
             </Button>
         </Fieldset>
     )
