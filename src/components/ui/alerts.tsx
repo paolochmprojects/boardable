@@ -22,7 +22,7 @@ const Alerts = () => {
     }, [alerts, removeAlert])
 
     return (
-        <div className="absolute flex flex-col-reverse gap-6 bottom-6 right-6">
+        <div className="fixed flex flex-col-reverse gap-6 bottom-6 right-6">
             {alerts.map((alert, index) => (
                 <div
                     key={index}
