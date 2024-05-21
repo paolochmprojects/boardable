@@ -2,11 +2,11 @@ import "./globals.css";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import Alerts from "@/components/ui/alerts";
-import { Bebas_Neue, Roboto_Mono } from "next/font/google";
+import { Bebas_Neue as bebasNeue, Roboto_Mono as robotoMono } from "next/font/google";
 
-const roboto = Roboto_Mono({ subsets: ["latin"], weight: ["400", "700"] });
+const roboto = robotoMono({ subsets: ["latin"], weight: ["400", "700"] });
 
-const bebas = Bebas_Neue({ subsets: ["latin"], weight: "400", variable: "--font-bebas" });
+const bebas = bebasNeue({ subsets: ["latin"], weight: "400", variable: "--font-bebas" });
 
 export const metadata: Metadata = {
   title: "Bordeable - Next",

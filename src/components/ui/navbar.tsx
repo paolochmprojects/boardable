@@ -27,7 +27,7 @@ const NavBar = ({ authenticated, userImage }: NavBarProps) => {
         <header>
             <nav className="flex max-w-screen-xl mx-auto p-6 justify-between items-center">
                 <Link href="/" className="text-4xl font-bold font-bebas">
-                    Boardeable
+                    Boardable
                 </Link>
                 <ul className="flex gap-4 items-center">
                     {authenticated ? (<div className="dropdown dropdown-end">
