@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/db"
 import { UserAccount } from "@/schemas/account.schema"
-import { genSalt, hash } from "bcryptjs"
 
 
 export const updateAccount = async (data: UserAccount) => {
@@ -16,7 +15,7 @@ export const updateAccount = async (data: UserAccount) => {
 
     if (!userExist) return { success: false, message: "No existe el usuario." }
 
-    const salt = await genSalt(10)
+    // const salt = await genSalt(10)
 
     const user = await prisma.user.update({
         where: {
@@ -24,11 +23,11 @@ export const updateAccount = async (data: UserAccount) => {
         },
         data: {
             name: data.name,
-            password: data.password ? await hash(data.password, salt) : undefined
+            // password: data.password ? await hash(data.password, salt) : undefined
         }
     })
 
-    const { password:_ , ...userData } = user
+    const { ...userData } = user
 
     return { success: true, message: "Cuenta actualizada exitosamente.", userData }
 }

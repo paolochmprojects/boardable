@@ -17,7 +17,7 @@ export const deleteAccount = async (email: string) => {
         }
     })
 
-    const { password: _, ...userData } = user
+    const {...userData } = user
 
     return { success: true, message: "Cuenta eliminada exitosamente.", userData }
 }
